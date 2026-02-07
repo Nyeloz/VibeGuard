@@ -8,7 +8,7 @@ from pydantic import BaseModel
 Severity = Literal["low", "medium", "high"]
 
 
-class ScanFinding(BaseModel):
+class ScanResponse(BaseModel):
     rule_id: str
     severity: Severity
     message: str
@@ -16,5 +16,5 @@ class ScanFinding(BaseModel):
     snippet: Optional[str] = None
 
 
-class GitHubScanResponse(BaseModel):
-    findings: List[ScanFinding]
+class GitHubScanRequest(BaseModel):
+    findings: List[ScanResponse]
