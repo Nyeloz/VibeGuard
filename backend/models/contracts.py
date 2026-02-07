@@ -1,3 +1,6 @@
+# Shared contract between API (Person A) and Scanner (Person B)
+# DO NOT change fields without updating CONTRACT.md
+
 from typing import Optional, List, Literal
 from pydantic import BaseModel
 
@@ -5,7 +8,7 @@ from pydantic import BaseModel
 Severity = Literal["low", "medium", "high"]
 
 
-class Finding(BaseModel):
+class ScanFinding(BaseModel):
     rule_id: str
     severity: Severity
     message: str
@@ -13,9 +16,5 @@ class Finding(BaseModel):
     snippet: Optional[str] = None
 
 
-class ScanResponse(BaseModel):
-    findings: List[Finding]
-
-class ScanTextRequest(BaseModel):
-    text: str 
-    language: str = "auto"
+class GitHubScanResponse(BaseModel):
+    findings: List[ScanFinding]
