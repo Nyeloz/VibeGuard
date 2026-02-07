@@ -6,6 +6,7 @@ __pycache__/
 
 #ENV
 .env
+.env.local
 
 .DS_Store
 
