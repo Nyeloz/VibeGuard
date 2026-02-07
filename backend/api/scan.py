@@ -1,10 +1,10 @@
 #endpoint
 
 from fastapi import APIRouter
-from models.contracts import ScanTextRequest, ScanResponse
+from models.contracts import GitHubScanRequest, ScanResponse
 
 scan_router = APIRouter()
 
-@scan_router.post("/text", response_model=ScanResponse)
-def scan_text(request: ScanTextRequest):
+@scan_router.post("/github", response_model=ScanResponse)
+def scan_github(request: GitHubScanRequest):
     return { "findings": []}
