@@ -8,6 +8,9 @@ class Finding(BaseModel): #This is the findings of the scanner. Which rule a pot
     severity: Literal["low", "medium", "high"]
     message: str
     location: Optional[int] = None
+    path: Optional[str] = None
+    line: Optional[int] = None
+    snippet: Optional[str] = None
 
 class ScanResponse(BaseModel): #Return list of findings
     findings: List[Finding]
