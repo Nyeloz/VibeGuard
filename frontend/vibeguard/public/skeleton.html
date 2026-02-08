@@ -7,25 +7,35 @@
 </head>
 
 <body>
-  <header>
-    <h1>VibeGuard</h1>
-    <img src="/VibesGuard_Logo.png" alt="VibeGuard Logo" width="96">
-    <p>Guarding your code repos against vulnerabilities</p>
+  <header class="site-header">
+    <div class="header-inner">
+      <img src="/VibesGuard_Logo.png" alt="VibeGuard Logo">
+      <div>
+        <h1>VibeGuard</h1>
+        <p>Guarding your automated code against vulnerabilities</p>
+      </div>
+    </div>
   </header>
-  <main>
-    <article class="card">
-      <h2>Paste Github Repository</h2>
-      <form id="scan-form">
-        <!-- widened input for easier pasting of long repo URLs -->
-        <input type="url" id="flink" name="flink" placeholder="https://github.com/owner/repo" required
-               style="width:640px; max-width:100%; padding:0.75rem; font-size:1rem;" />
-        <button id="scan-btn" type="submit">Scan</button>
+
+  <main class="container">
+    <section class="card scan-card">
+      <form id="scan-form" class="scan-form">
+        <label for="flink" class="small-muted" style="text-align:center; display:block; margin-bottom:6px;">Enter GitHub repository URL</label>
+        <div class="input-row">
+          <input type="url" id="flink" name="flink" placeholder="https://github.com/owner/repo" required />
+        </div>
+        <div style="display:flex;justify-content:center;margin-top:12px;">
+          <button id="scan-btn" class="button-primary" type="submit">Scan</button>
+        </div>
+        <div class="small-muted" style="text-align:center;margin-top:10px;">Public GitHub repos only — no auth required for demo</div>
       </form>
-    </article>
-    <article class="card">
-      <h2>Flagged Messages</h2>
+    </section>
+
+    <aside class="card results-card">
+      <h2 style="text-align:center;">Flagged Messages</h2>
       <pre id="show-errors"></pre>
-    </article>
+      <div class="footer-note" style="text-align:center;">Results are redacted and filtered for high-confidence matches.</div>
+    </aside>
   </main>
 
   <script>
