@@ -1,28 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="/styles.css" type="text/css">
+  <meta charset="utf-8" />
+  <title>VibeGuard Tester</title>
+  <link rel="stylesheet" href="./styles.css" type="text/css">
 </head>
 
 <body>
-  <header>
-    <h1>VibeGuard</h1>
-    <img src="/VibesGuard_Logo.png">
-    <p>Guarding your autominst vulnerabilities  </p>
+  <header class="site-header">
+    <div class="header-inner">
+      <img src="/VibesGuard_Logo.png" alt="VibeGuard Logo">
+      <div>
+        <h1>VibeGuard</h1>
+        <p>Guarding your automated code against vulnerabilities</p>
+      </div>
+    </div>
   </header>
-  <main>
-    <article class="card">
-      <h2>Paste Github Repository</h2>
-      <form action="/action_page/">
-          
-            <input type="text" id="flink" name="flink"><br>
-         
-        </form>
-    </article>
-    <article class="card">
-      <h2>Flagged Messages</h2>
-      <p id="show-errors"></p>
-    </article>
+
+  <main class="container">
+    <section class="card scan-card">
+      <form id="scan-form" class="scan-form">
+        <label for="flink" class="small-muted" style="text-align:center; display:block; margin-bottom:6px;">Enter GitHub repository URL</label>
+        <div class="input-row">
+          <input type="url" id="flink" name="flink" placeholder="https://github.com/owner/repo" required />
+        </div>
+        <div style="display:flex;justify-content:center;margin-top:12px;">
+          <button id="scan-btn" class="button-primary" type="submit">Scan</button>
+        </div>
+        <div class="small-muted" style="text-align:center;margin-top:10px;">Public GitHub repos only — no auth required for demo</div>
+      </form>
+    </section>
+
+    <aside class="card results-card">
+      <h2 style="text-align:center;">Flagged Messages</h2>
+      <pre id="show-errors"></pre>
+      <div class="footer-note" style="text-align:center;">Results are redacted and filtered for high-confidence matches.</div>
+    </aside>
   </main>
+
+  <script>
+    // Minimal client-side tester to POST to the Next.js proxy route
+    (function(){
+      const form = document.getElementById('scan-form');
+      const input = document.getElementById('flink');
+      const out = document.getElementById('show-errors');
+      const btn = document.getElementById('scan-btn');
+
+      function setLoading(on){
+        btn.disabled = on;
+        input.disabled = on;
+        btn.textContent = on ? 'Scanning…' : 'Scan';
+      }
+
+      form.addEventListener('submit', async function(e){
+        e.preventDefault();
+        out.textContent = '';
+        const url = input.value.trim();
+        if(!url) return;
+        setLoading(true);
+        try{
+          const res = await fetch('/api/scan/github', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ repo_url: url })
+          });
+          const json = await res.json();
+          if(!res.ok){
+            out.textContent = 'Error: ' + (json.detail || json.error || JSON.stringify(json));
+          } else {
+            out.textContent = JSON.stringify(json, null, 2);
+          }
+        } catch(err){
+          out.textContent = 'Network error: ' + (err && err.message ? err.message : err);
+        } finally {
+          setLoading(false);
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
